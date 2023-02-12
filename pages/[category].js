@@ -1,36 +1,33 @@
-import Head from "next/head";
-import NewsCard from "@/components/NewsCard";
 import styles from "@/styles/News.module.css";
-import { useState,useEffect } from "react";
+import NewsCard from "@/components/NewsCard";
+import { useState, useEffect } from "react";
 import Button from "@/components/Button";
-import  Router  from "next/router";
+import Router from 'next/router'
+import Head from "next/head";
 
-const Home = ({ newsData, page, totalPages })  => {
+const NewsCategory = ({ newsData, page, totalPages, category }) => {
   const [currentPage, setCurrentPage] = useState(page);
-  
+
   useEffect(() => {
-    Router.push(`/?page=${currentPage}`);
-  }, [currentPage]);
+    Router.push(`/${category}/?page=${currentPage}`);
+  }, [currentPage,category]);
+
+  useEffect(()=>{
+    setCurrentPage(1);
+  },[category])
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-    console.log({totalPages,currentPage})
-    if(currentPage === totalPages){
-      console.log(true);
-    }
-    else{
-      console.log(false)
-    }
+    setCurrentPage(page + 1);
   };
 
   const handlePrevPage = () => {
-    setCurrentPage(currentPage - 1);
+    setCurrentPage(page - 1);
   };
 
   return (
     <>
-      <Head>
-        <title>Newsapp - Get the Latest News</title>
+    <Head>
+        <title>Newsapp | {category} - Get the {category} News</title>
         <meta
           name="description"
           content="Get the Latest news on the tip of your click"
@@ -59,16 +56,17 @@ const Home = ({ newsData, page, totalPages })  => {
       </div>
     </>
   );
-}
+};
 
-export default Home;
+export default NewsCategory;
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({query}) {
+  const category = query.category
   const apiKey = process.env.NEXT_APP_NEWS_API;
 
-  const page = Number(query.page) || 1;
+  const page = query.page ? Number(query.page) : 1;
   const response = await fetch(
-    `https://newsapi.org/v2/top-headlines?country=in&category=general&apiKey=${apiKey}&page=${page}`
+    `https://newsapi.org/v2/top-headlines?country=in&category=${category}&apiKey=${apiKey}&page=${page}`
   );
   const data = await response.json();
   const newsData = data.articles;
@@ -80,6 +78,7 @@ export async function getServerSideProps({ query }) {
       newsData,
       page,
       totalPages,
+      category
     },
   };
 }
