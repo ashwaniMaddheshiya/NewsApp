@@ -28,7 +28,7 @@ To run the project locally, follow these steps:
 Contributions are always welcome. If you have an idea for a new feature or find a bug, feel free to open an issue or a pull request.
 
 ## Homepage
-![image](https://user-images.githubusercontent.com/98683284/218326660-504087c8-5f2f-4965-9131-b03b9ceb3be9.png)
+![image](https://user-images.githubusercontent.com/98683284/219214762-7ac291cb-a08a-4243-96a2-49e6be999f84.png)
 
 
 
